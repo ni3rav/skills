@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 Run a **grill**: batches of multiple-choice questions until the user locks a decision table, then save that table. **Speed** controls **assumptions**. The user's **vocabulary** is the wording of record. The **lock** is the table the user has confirmed.
 
-A reply during the grill is the questions and the table. Add a graph once two rows are linked.
+A reply during the grill is the questions and the rows the previous response added or changed. Show the full table when the four targets are covered, and again after each edit until the user locks it.
+
+The mermaid graph is written only in the file or the issue.
 
 ## 1. Speed
 
@@ -44,7 +46,7 @@ Each question:
 
 A recommendation stays in the question. It becomes a row only after the user picks it, source `answered`.
 
-**Vocabulary:** once the user names a thing, that name is the one in later questions, the table, the graph, and the lock.
+**Vocabulary:** once the user names a thing, that name is the one in later questions, the table, and the lock.
 
 Cover these four targets. Stop when each target is covered at the chosen speed.
 
@@ -61,7 +63,7 @@ One running table:
 | --- | --- | --- | --- |
 | | | | answered or assumed |
 
-After each batch, wait for answers, fold them into the table, and show the table. Then take the next batch this speed still allows.
+After each batch, wait for answers and fold them into the running table. Show only the rows the previous response added or changed. Then take the next batch this speed still allows.
 
 Question shape (the return is not a default subject):
 
@@ -79,9 +81,9 @@ Done when the four targets are covered at the chosen speed.
 
 ## 4. Shared understanding
 
-Show the full table and a mermaid graph. One node per row, labels in the user's vocabulary, an edge only where one row depends on another. Group unlinked rows by target.
+Show the full table.
 
-The user may change any row, including dropping an assumption. Apply the change and show the table and graph again.
+The user may change any row, including dropping an assumption. Apply the change and show the full table again.
 
 The user locks the table by confirming it.
 
@@ -89,14 +91,12 @@ Done when the user locks the table.
 
 ## 5. Store
 
-Ask where the lock goes. One recommendation, one sentence of why.
+Ask where the lock goes, and wait for their answer. Options: a local markdown file, a GitHub issue, or none of these. Their answer is the destination.
 
-| Choice | Recommend it when |
-| --- | --- |
-| Local markdown | the project has no GitHub remote. Suggest `docs/<slug>.md`, slug from their subject. |
-| GitHub issue | `gh` can see a GitHub repo. Title is their subject. |
-| None of these | they name the destination. |
+- **Local markdown.** Ask for the path. Write that path.
+- **GitHub issue.** Ask which repo. The title is their subject. When the repo they asked for does not exist yet, ask its name and whether it is public or private, create it with `gh repo create`, then create the issue with `gh issue create` and the lock as the body.
+- **None of these.** They name the destination.
 
-After they pick, read [references/lock.md](references/lock.md) and write the lock from the locked rows. Local: write that file. GitHub: create the issue with `gh issue create` and the lock as the body. The reply is the file path or the issue URL, plus the locked table.
+After they pick, read [references/lock.md](references/lock.md) and write the lock from the locked rows. The reply is the file path or the issue URL.
 
-Done when the path or the URL is in the reply. If the write fails, the reply still contains the lock.
+Done when the path or the URL is in the reply. If the write fails, the reply contains the locked table.

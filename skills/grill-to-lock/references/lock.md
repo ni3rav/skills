@@ -28,4 +28,4 @@ Group the locked rows under the four headings. Copy item, detail, and source. Le
 
 ## Map
 
-The locked mermaid graph, unchanged.
+A mermaid graph. One node per locked row, labels in the user's vocabulary, an edge only where one row depends on another. Group unlinked rows by target.
